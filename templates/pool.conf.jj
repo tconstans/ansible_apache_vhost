@@ -1,0 +1,22 @@
+[www_{{apache_server_name}}]
+user = {{ apache_user }}
+group = apache
+listen = {{ apache_php_socket }}
+listen.owner = {{ apache_user }}
+listen.group = apache
+listen.mode = 0660
+pm = static
+pm.max_children = 50
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 10
+pm.max_requests = 10000
+pm.status_path = /ncstatus
+slowlog = {{ apache_base_dir }}/logs/php-slow.log
+request_slowlog_timeout = 0
+php_admin_value[error_log] = {{ apache_base_dir }}/logs/php-error.log
+php_admin_flag[log_errors] = on
+php_value[session.save_handler] = files
+php_value[session.save_path]    = {{ apache_base_dir }}/session
+php_value[soap.wsdl_cache_dir]  = {{ apache_base_dir }}/wsdlcache
+

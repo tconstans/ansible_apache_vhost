@@ -1,0 +1,13 @@
+---
+# handlers file for apache_vhost
+- name: restart apache
+  service:
+    name: httpd
+    state: restarted
+  when: apache_restart
+
+- name: restart php-fpm
+  service:
+    name: php73-php-fpm
+    state: restarted
+  when: apache_restart

@@ -1,0 +1,43 @@
+<VirtualHost *:80>
+   Servername {{ apache_server_name }}
+   {%for alias in apache_server_alias %}
+   ServerAlias {{ alias }}
+   {%endfor%}
+   DocumentRoot {{ apache_document_root }}
+   <Directory {{ apache_document_root }}>
+      require all granted
+      Options -indexes
+   </Directory>
+   {%if apache_use_ssl %}
+   RewriteEngine on
+   RewriteCond %{HTTPS} off
+   RewriteCond %{REQUEST_URI}  "!^/\.well-known"
+   RewriteRule (.*) https://%{SERVER_NAME}$1 [R,L]
+   {%endif %}
+</VirtualHost>
+
+{%if apache_use_ssl %}
+<VirtualHost *:443>
+   Servername {{ apache_server_name }}
+   {%for alias in apache_server_alias %}
+   ServerAlias {{ alias }}
+   {%endfor%}
+   DocumentRoot {{ apache_document_root }}
+   SSLEngine on
+   SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+   SSLCipherSuite HIGH:3DES:!aNULL:!MD5:!SEED:!IDEA
+   SSLCertificateChainFile {{ apache_ssl_chain }}
+   SSLCertificateFile      {{ apache_ssl_certificate }}
+   SSLCertificateKeyFile   {{ apache_ssl_key }}
+   CustomLog {{ apache_access_log }} combined
+   DirectoryIndex index.php index.html
+   <Directory {{ apache_document_root }}>
+      require all granted
+      Options +Indexes
+      AllowOverride {{ apache_allowoverride }}
+   </Directory>
+   <FilesMatch \.php$>
+      SetHandler  "proxy:unix:{{ apache_php_socket }}|fcgi://localhost/"
+   </FilesMatch>
+</VirtualHost>
+{%endif %}

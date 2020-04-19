@@ -1,0 +1,23 @@
+{{ apache_base_dir }}/logs/access*log {
+   daily
+   rotate 365
+   compress
+   missingok
+   notifempty
+   sharedscripts
+   postrotate
+   /bin/systemctl reload httpd.service > /dev/null 2>/dev/null || true
+   endscript
+}
+
+{{ apache_base_dir }}/logs/php*log {
+   daily
+   rotate 15
+   missingok
+   notifempty
+   sharedscripts
+   postrotate
+   /bin/kill -SIGUSR1 `cat /var/opt/remi/php73/run/php-fpm/php-fpm.pid 2>/dev/null` 2>/dev/null || true
+   endscript
+                                 }
+

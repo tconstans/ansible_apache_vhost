@@ -1,0 +1,26 @@
+---
+- name: goaccess - install
+  yum:
+    name: https://infra.opendoor.fr/Files/goaccess-1.3-1.el7.x86_64.rpm
+    state: present
+
+- name: goaccess - configure
+  template:
+    src: goaccess.conf
+    dest: "/srv/{{ apache_server_name }}/goaccess.conf"
+    owner: "{{ apache_user }}"
+
+- name: goaccess - create stats dir
+  file:
+    path: "/srv/{{ apache_server_name }}/stats"
+    owner: "{{ apache_user }}"
+    state: directory
+
+- name: goaccess - create cronjob
+  cron:
+    name: "goaccess {{ apache_server_name }}"
+    cron_file: "goaccess_{{ apache_server_name }}"
+    user: "{{ apache_user }}"
+    hour: "00"
+    minute: "{{ 59 | random(seed=inventory_hostname) }}"
+    job: "LANG=fr_FR.UTF8 /usr/bin/goaccess  -p /srv/{{ apache_server_name }}/goaccess.conf --load-from-disk --keep-db-files"
