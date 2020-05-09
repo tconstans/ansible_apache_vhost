@@ -1,0 +1,34 @@
+---
+- name: install certbot
+  yum:
+    name: certbot
+    state: present
+
+- name: install apache config file without ssl
+  vars:
+    apache_use_ssl: false
+  template:
+    src: vhost.conf.jj
+    dest: /etc/httpd/conf.d/{{ apache_server_name }}.conf
+    mode: 0644
+  notify: restart apache
+
+- name: if needed, we restart apache
+  meta: flush_handlers
+
+- name: generate certificates
+  vars:
+    subdomains: "{{ apache_server_alias | join( ' -d ' ) }}"
+  command: certbot certonly --webroot --webroot-path {{ apache_document_root }}  -d {{ subdomains }}
+  args:
+    creates: "{{ apache_ssl_chain }}"
+
+- name: create cronjob for renewal
+  cron:
+    name: certbot
+    cron_file: certbot
+    user: root
+    hour: "01"
+    minute: "00"
+    weekday: "6"
+    job: "/usr/bin/certbot renew && /sbin/apachectl graceful"

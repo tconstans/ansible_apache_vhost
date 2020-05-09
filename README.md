@@ -19,6 +19,7 @@ apache_access_log: {{ apache_base_dir}}/logs/access_log
 apache_php_socket: {{ apache_base_dir }}/php-fpm.sock
 apache_use_php: true
 apache_use_ssl: true
+apache_use_certbot: true
 apache_stats: true
 apache_ssl_certificate: /etc/letsencrypt/live/{{ apache_server_name }}/cert.pem
 apache_ssl_chain: /etc/letsencrypt/live/{{ apache_server_name }}/fullchain.pem
