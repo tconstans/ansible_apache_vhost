@@ -32,8 +32,9 @@
     - "{{ apache_base_dir }}/wsdlcache"
 
 - name: generate cert
-  include_tasks: certbot.yml
+  import_tasks: certbot.yml
   when: apache_use_certbot
+  tags: certbot,ssl
 
 - name: vhost config file
   template:

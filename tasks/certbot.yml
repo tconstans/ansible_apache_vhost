@@ -12,16 +12,28 @@
     dest: /etc/httpd/conf.d/{{ apache_server_name }}.conf
     mode: 0644
   notify: restart apache
+  register: result
 
+# cant use meta / flush handlers in conditionnals
 - name: if needed, we restart apache
-  meta: flush_handlers
+  service:
+    name: httpd
+    state: restarted
+  when: result.changed
 
-- name: generate certificates
+- name: generate certificates for domaine and subdomains
   vars:
-    subdomains: "{{ apache_server_alias | join( ' -d ' ) }}"
-  command: certbot certonly --webroot --webroot-path {{ apache_document_root }}  -d {{ subdomains }}
+    subdomains: "-d {{ apache_server_alias | join( ' -d ' ) }}"
+  command: certbot certonly --webroot --webroot-path {{ apache_document_root }} -d {{ apache_server_name }} {{ subdomains }}
   args:
     creates: "{{ apache_ssl_chain }}"
+  when: apache_server_alias is defined
+
+- name: generate certificates
+  command: certbot certonly --webroot --webroot-path {{ apache_document_root }} -d {{ apache_server_name }}
+  args:
+    creates: "{{ apache_ssl_chain }}"
+  when: apache_server_alias is not defined
 
 - name: create cronjob for renewal
   cron:

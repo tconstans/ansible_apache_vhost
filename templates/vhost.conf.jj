@@ -1,8 +1,10 @@
 <VirtualHost *:80>
    Servername {{ apache_server_name }}
+   {% if apache_server_alias is defined %}
    {%for alias in apache_server_alias %}
    ServerAlias {{ alias }}
    {%endfor%}
+   {%endif%}
    DocumentRoot {{ apache_document_root }}
    <Directory {{ apache_document_root }}>
       require all granted
@@ -19,9 +21,11 @@
 {%if apache_use_ssl %}
 <VirtualHost *:443>
    Servername {{ apache_server_name }}
+   {% if apache_server_alias is defined %}
    {%for alias in apache_server_alias %}
    ServerAlias {{ alias }}
    {%endfor%}
+   {%endif%}
    DocumentRoot {{ apache_document_root }}
    SSLEngine on
    SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
@@ -36,8 +40,10 @@
       Options +Indexes
       AllowOverride {{ apache_allowoverride }}
    </Directory>
+   {%if apache_use_php %}
    <FilesMatch \.php$>
       SetHandler  "proxy:unix:{{ apache_php_socket }}|fcgi://localhost/"
    </FilesMatch>
+   {% endif %}
 </VirtualHost>
 {%endif %}
