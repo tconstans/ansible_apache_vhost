@@ -13,7 +13,7 @@
 - name: php-fpm config file
   template:
     src: pool.conf.jj
-    dest: /etc/opt/remi/php73/php-fpm.d/{{apache_server_name }}.conf
+    dest: /etc/opt/remi/php73/php-fpm.d/{{ apache_server_name }}.conf
   notify: restart php-fpm
   when: apache_use_php
 
