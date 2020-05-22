@@ -53,3 +53,8 @@
   import_tasks: goaccess.yml
   when: apache_stats
   tags: stats
+
+- name: zabbix setup
+  import_tasks: zabbix.yml
+  when: apache_use_zabbix and apache_use_ssl
+  tags: zabbix, ssl

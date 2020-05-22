@@ -1,0 +1,13 @@
+---
+- name: deploy zabbix lld script
+  copy:
+    src: lld_certlist.py
+    dest: /etc/zabbix/scripts
+    group: zabbix
+    mode: 0750
+
+- name: deploy zabbix userparameter
+  copy:
+    dest: /etc/zabbix/zabbix_agentd.d/user_parameter_certificate_discovery.conf
+    content: "UserParameter=certificate.discovery,/etc/zabbix/scripts/lld_certlist.py"
+  notify: restart zabbix_agentd
