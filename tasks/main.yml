@@ -1,7 +1,19 @@
 ---
 # tasks file for apache_vhost
 
+
 - name: create dedicated user
+  tags: wip
+  user:
+    name: "{{ apache_user }}"
+    groups:
+    - apache
+    home: "{{ apache_base_dir }}"
+    shell: /bin/bash
+  when: apache_user_password is not defined
+
+- name: create dedicated user - ssh
+  tags: wip
   user:
     name: "{{ apache_user }}"
     groups:
@@ -9,6 +21,7 @@
     - ssh_users
     home: "{{ apache_base_dir }}"
     shell: /bin/bash
+  when: apache_user_password is defined
 
 - name: php-fpm config file
   template:

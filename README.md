@@ -14,6 +14,7 @@ Role Variables
 apache_server_name
 apache_ssl_root_email: email to use for certificate
 apache_server_alias (list)
+apache_user_password: default undefined
 apache_base_dir: /srv/{{ apache_server_name }}
 apache_document_root: {{ apache_base_dir }}/www
 apache_access_log: {{ apache_base_dir}}/logs/access_log
@@ -26,7 +27,7 @@ apache_stats: true
 apache_ssl_certificate: /etc/letsencrypt/live/{{ apache_server_name }}/cert.pem
 apache_ssl_chain: /etc/letsencrypt/live/{{ apache_server_name }}/fullchain.pem
 apache_ssl_key: /etc/letsencrypt/live/{{ apache_server_name }}/privkey.pem
-apache_user: {{ apache_server_name }}
+apache_user: {{ apache_server_name | regex_search( '([^.]+)' ) }} }}
 apache_allowoverride: all
 
 Example Playbook

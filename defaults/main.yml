@@ -11,7 +11,7 @@ apache_use_certbot: true
 apache_ssl_certificate: "/etc/letsencrypt/live/{{ apache_server_name }}/cert.pem"
 apache_ssl_chain: "/etc/letsencrypt/live/{{ apache_server_name }}/fullchain.pem"
 apache_ssl_key: "/etc/letsencrypt/live/{{ apache_server_name }}/privkey.pem "
-apache_user: "{{ apache_server_name }}"
+apache_user: "{{ apache_server_name | regex_search( '([^.]+)' ) }} }}"
 apache_allowoverride: all
 apache_restart: false
 apache_stats: true
