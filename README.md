@@ -12,6 +12,7 @@ Role Variables
 --------------
 
 apache_server_name
+apache_ssl_root_email: email to use for certificate
 apache_server_alias (list)
 apache_base_dir: /srv/{{ apache_server_name }}
 apache_document_root: {{ apache_base_dir }}/www
