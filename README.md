@@ -12,6 +12,7 @@ Role Variables
 --------------
 
 apache_server_name
+apache_server_ip
 apache_ssl_root_email: email to use for certificate
 apache_server_alias (list)
 apache_user_password: default undefined
@@ -21,6 +22,7 @@ apache_access_log: {{ apache_base_dir}}/logs/access_log
 apache_php_socket: {{ apache_base_dir }}/php-fpm.sock
 apache_use_php: true
 apache_use_ssl: true
+apache_use_dns: true - wether we setup up dns A and CNAME records
 apache_use_zabbix: true - wether we install script to monitor certificate expiry date
 apache_use_certbot: true
 apache_use_stats: true

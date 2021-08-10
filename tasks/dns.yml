@@ -1,0 +1,26 @@
+---
+  - name: setup dns names
+    block:
+    - name: create ovh DNS A record
+      ovh_dns:
+        domain: opendoor.fr
+        name: "{{ apache_server_name }}"
+        type: A
+        value: "{{ apache_server_ip }}"
+
+    - name: create ovh DNS CNAME
+      ovh_dns:
+        domain: opendoor.fr
+        name: "{{ item }}"
+        type: CNAME
+        value: "{{ apache_server_name }}"
+      loop:
+       "{{ apache_server_alias }}"
+      when: apache_server_alias is defined
+    delegate_to: localhost
+    become: false
+    environment:
+      OVH_ENDPOINT: ovh-eu
+      OVH_APPLICATION_KEY: "{{ lookup( 'keepass', 'opendoor/ovh_application_key', 'password' ) }}"
+      OVH_APPLICATION_SECRET: "{{ lookup( 'keepass', 'opendoor/ovh_application_secret', 'password' ) }}"
+      OVH_CONSUMER_KEY: "{{ lookup( 'keepass', 'opendoor/ovh_consumer_key', 'password' ) }}"

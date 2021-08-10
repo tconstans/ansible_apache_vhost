@@ -44,6 +44,10 @@
     - "{{ apache_base_dir }}/session"
     - "{{ apache_base_dir }}/wsdlcache"
 
+- name: dns setup
+  include_tasks: dns.yml
+  when: apache_use_dns is defined
+
 - name: generate cert
   import_tasks: certbot.yml
   when: apache_use_certbot
