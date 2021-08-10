@@ -64,7 +64,7 @@
 
 - name: goaccess
   import_tasks: goaccess.yml
-  when: apache_stats
+  when: apache_use_stats
   tags: stats
 
 - name: zabbix setup
