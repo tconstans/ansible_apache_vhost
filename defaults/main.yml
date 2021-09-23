@@ -10,6 +10,7 @@ apache_ssl_certificate: "/etc/letsencrypt/live/{{ apache_server_name }}/cert.pem
 apache_ssl_chain: "/etc/letsencrypt/live/{{ apache_server_name }}/fullchain.pem"
 apache_ssl_key: "/etc/letsencrypt/live/{{ apache_server_name }}/privkey.pem "
 apache_use_certbot: true
+apache_use_dns: true
 apache_use_php: true
 apache_use_ssl: true
 apache_use_stats: true
