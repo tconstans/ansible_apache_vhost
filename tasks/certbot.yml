@@ -24,13 +24,13 @@
 - name: generate certificates for domaine and subdomains
   vars:
     subdomains: "-d {{ apache_server_alias | join( ' -d ' ) }}"
-  command: certbot certonly --webroot --webroot-path {{ apache_document_root }} -d {{ apache_server_name }} {{ subdomains }}
+  command: certbot certonly --agree-tos -m {{ apache_ssl_root_email }} --webroot --webroot-path {{ apache_document_root }} -d {{ apache_server_name }} {{ subdomains }}
   args:
     creates: "{{ apache_ssl_chain }}"
   when: apache_server_alias is defined
 
 - name: generate certificates
-  command: certbot certonly --webroot --webroot-path {{ apache_document_root }} -d {{ apache_server_name }}
+  command: certbot certonly --agree-tos -m {{ apache_ssl_root_email }} --webroot --webroot-path {{ apache_document_root }} -d {{ apache_server_name }}
   args:
     creates: "{{ apache_ssl_chain }}"
   when: apache_server_alias is not defined

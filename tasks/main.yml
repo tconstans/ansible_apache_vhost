@@ -69,5 +69,5 @@
 
 - name: zabbix setup
   import_tasks: zabbix.yml
-  when: apache_use_zabbix and apache_use_ssl
+  when: apache_use_zabbix|bool
   tags: zabbix, ssl
