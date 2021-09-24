@@ -31,6 +31,7 @@ apache_ssl_chain: /etc/letsencrypt/live/{{ apache_server_name }}/fullchain.pem
 apache_ssl_key: /etc/letsencrypt/live/{{ apache_server_name }}/privkey.pem
 apache_user: {{ apache_server_name | regex_search( '([^.]+)' ) }} }}
 apache_allowoverride: all
+apache_update_conf: true - wether we override existing config file
 
 Example Playbook
 ----------------

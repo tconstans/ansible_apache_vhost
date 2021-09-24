@@ -46,7 +46,7 @@
 
 - name: dns setup
   include_tasks: dns.yml
-  when: apache_use_dns is defined
+  when: apache_use_dns
 
 - name: generate cert
   import_tasks: certbot.yml
@@ -59,6 +59,7 @@
     dest: /etc/httpd/conf.d/{{ apache_server_name }}.conf
     mode: 0644
   notify: restart apache
+  when: apache_update_conf
 
 - name: logrotate config file
   template:

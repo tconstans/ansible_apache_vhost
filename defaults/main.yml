@@ -16,3 +16,4 @@ apache_use_ssl: true
 apache_use_stats: true
 apache_use_zabbix: true
 apache_user: "{{ apache_server_name | regex_search( '([^.]+)' ) }} }}"
+apache_update_conf: true
