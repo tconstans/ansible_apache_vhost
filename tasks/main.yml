@@ -10,7 +10,7 @@
     - apache
     home: "{{ apache_base_dir }}"
     shell: /bin/bash
-  when: apache_user_password is not defined
+  when: apache_user_password is not defined and apache_user != 'apache'
 
 - name: create dedicated user - ssh
   tags: wip
