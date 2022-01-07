@@ -33,6 +33,12 @@ apache_user: {{ apache_server_name | regex_search( '([^.]+)' ) }} }}
 apache_allowoverride: all
 apache_update_conf: true - wether we override existing config file
 apache_ssl_root_email: email used for letsencrypt certificate
+apache_use_database: false
+apache_db_name: no default
+apache_db_user: no default
+apache_db_password: no default
+apache_db_login_user: from root/.my.cnf
+apache_db_login_password: from my.cnf
 
 Example Playbook
 ----------------
