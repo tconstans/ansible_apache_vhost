@@ -23,13 +23,6 @@
     shell: /bin/bash
   when: apache_user_password is defined
 
-- name: php-fpm config file
-  template:
-    src: pool.conf.jj
-    dest: /etc/opt/remi/php73/php-fpm.d/{{ apache_server_name }}.conf
-  notify: restart php-fpm
-  when: apache_use_php
-
 - name: create directories
   file:
     path: "{{ item }}"
@@ -48,36 +41,20 @@
   include_tasks: dns.yml
   when: apache_use_dns
 
-- name: generate cert
-  import_tasks: certbot.yml
-  when: apache_use_certbot
-  tags: certbot,ssl
-
 - name: vhost config file
   template:
     src: vhost.conf.jj
     dest: /etc/httpd/conf.d/{{ apache_server_name }}.conf
     mode: 0644
   notify: restart apache
-  when: apache_update_conf
 
 - name: logrotate config file
   template:
     src: logrotate.conf.jj
-    dest: "/etc/logrotate.d/vhost.conf"
+    dest: "/etc/logrotate.d/vhost_{{ apache_server_name }}.conf"
     mode: 0644
 
 - name: goaccess
   import_tasks: goaccess.yml
   when: apache_use_stats
   tags: stats
-
-- name: zabbix setup
-  import_tasks: zabbix.yml
-  when: apache_use_zabbix|bool
-  tags: zabbix, ssl
-
-- name: db setup
-  import_tasks: db.yml
-  when: apache_use_database
-  tags: db

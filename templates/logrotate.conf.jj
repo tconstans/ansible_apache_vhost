@@ -10,14 +10,3 @@
    endscript
 }
 
-{{ apache_base_dir }}/logs/php*log {
-   daily
-   rotate 15
-   missingok
-   notifempty
-   sharedscripts
-   postrotate
-   /bin/kill -SIGUSR1 `cat /var/opt/remi/php73/run/php-fpm/php-fpm.pid 2>/dev/null` 2>/dev/null || true
-   endscript
-                                 }
-

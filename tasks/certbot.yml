@@ -1,6 +1,6 @@
 ---
 - name: install certbot
-  yum:
+  package:
     name: certbot
     state: present
 
@@ -43,4 +43,4 @@
     hour: "01"
     minute: "00"
     weekday: "6"
-    job: "/usr/bin/certbot renew && /sbin/apachectl graceful"
+    job: "/usr/bin/certbot renew"

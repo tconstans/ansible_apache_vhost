@@ -6,12 +6,6 @@
     state: restarted
   when: apache_restart
 
-- name: restart php-fpm
-  service:
-    name: php73-php-fpm
-    state: restarted
-  when: apache_restart
-
 - name: restart zabbix_agentd
   service:
     name: zabbix-agent
